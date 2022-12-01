@@ -158,9 +158,12 @@
         <p id="p1">Número (entre 1 a 100):</p>
         <input id="camp_soma" type="number" name="camp_soma">
         <button id="add">Adicionar</button>
-        <div name="lista" id="lista" size="10">
+        <div id="lista" size="10">
             <option id="list_soma" value="list_soma">Lista de Números</option>
         </div>
+        <select id="lista_temp" hidden>
+            <option id="list_soma_temp" value="list_soma">Soma valor</option>
+        </select>
         <button id="end">Finalizar</button>
         <div id="resultado"></div>
     </section>
@@ -176,7 +179,9 @@
             document.getElementById("lista"),//2
             document.getElementById("list_soma"),//3
             document.getElementById("end"),//4
-            document.getElementById("resultado")//5
+            document.getElementById("resultado"),//5
+            document.getElementById("list_soma_temp"),//6
+            document.getElementById("lista_temp")//7
         ];
         elements[1].focus();
 
@@ -230,18 +235,24 @@
 
             else {
                 verif(listsomabers.includes(elements[1].value));
+                var newItem_temp = document.createElement('Option')
+                newItem_temp.innerText = "valor"
                 var newItem = document.createElement('Option');
+                
                 if (elements[1].value < 10) {
                     newItem.text = `00${parseFloat(elements[1].value)} foi inserido`;
                     elements[2].appendChild(newItem);
-
+                    elements[7].appendChild(newItem_temp);
+                    
                 } else if (elements[1].value < 100) {
                     newItem.text = `0${parseFloat(elements[1].value)} foi inserido`;
                     elements[2].appendChild(newItem);
-
+                    elements[7].appendChild(newItem_temp);
+                   
                 } else {
                     newItem.text = `${parseFloat(elements[1].value)} foi inserido`;
                     elements[2].appendChild(newItem);
+                    elements[7].appendChild(newItem_temp);
                 }
             }
             elements[1].value = ''
@@ -278,11 +289,11 @@
                 elements[5].style.padding = '2.5px';
                 elements[5].style.backgroundColor = 'var(--cor-4)';
                 elements[5].style.borderRadius = '3px'
-                elements[5].innerHTML = `Você cadastrou (${elements[3].length - 1}) número(s),
+                elements[5].innerHTML = `Você cadastrou (${elements[7].length - 1}) número(s),
                                      o número maior foi (${maior}), 
                                      o número menor foi (${menor}),
                                      a soma de todos os valores foi (${soma})
-                                     e a média dos valores é ${soma / (elements[2].length - 1)}!`;
+                                     e a média dos valores é ${soma / (elements[7].length - 1)}!`;
                 elements[1].focus();
                 console.log(elements[3].length)
             }
