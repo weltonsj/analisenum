@@ -116,6 +116,18 @@
             text-shadow: 0px 1px 3px black;
         }
 
+        span {
+            word-spacing: 3px;
+            font-family: var(--Rubik-Distressed);
+            font-size: 0.85rem;
+            color: yellow;
+            /* text-shadow:
+                0px 0px 1px black,
+                0px 0px 1px black,
+                0px 0px 2px black,
+                0px 0px 2px black, ; */
+        }
+
         #resultado {
             word-spacing: 3px;
             font-family: monospace;
@@ -214,6 +226,8 @@
         function addValueList() {
             function verif(a) {
                 if (a) {
+                    elements[1].value = ''
+                    elements[1].focus();
                     window.alert('Valor já consta na lista.');
                     listTemp.pop();
                     let optionDel = document.getElementsByTagName("option");
@@ -228,10 +242,14 @@
             }
 
             if (elements[1].value <= 0) {
+                elements[1].value = ''
+                elements[1].focus();
                 window.alert('Valor não digitado, insira um valor e clique em "Adicionar".');
             }
 
             else if (elements[1].value > 100) {
+                elements[1].value = ''
+                elements[1].focus();
                 window.alert(`O número ${elements[1].value} está a cima do número permitido.`);
             }
 
@@ -240,17 +258,17 @@
                 var newItem_temp = document.createElement('Option')
                 newItem_temp.innerText = "valor"
                 var newItem = document.createElement('Option');
-                
+
                 if (elements[1].value < 10) {
                     newItem.text = `00${parseFloat(elements[1].value)} foi inserido`;
                     elements[2].appendChild(newItem);
                     elements[7].appendChild(newItem_temp);
-                    
+
                 } else if (elements[1].value < 100) {
                     newItem.text = `0${parseFloat(elements[1].value)} foi inserido`;
                     elements[2].appendChild(newItem);
                     elements[7].appendChild(newItem_temp);
-                   
+
                 } else {
                     newItem.text = `${parseFloat(elements[1].value)} foi inserido`;
                     elements[2].appendChild(newItem);
@@ -285,17 +303,19 @@
                         maior = parseInt(listsomabers[c]);
                     }
                 }
+
+                var somaF = soma / (elements[7].length - 1);
                 elements[5].style.border = '0.1px solid white';
                 elements[5].style.marginTop = '5px';
                 elements[5].style.marginBottom = '5px';
                 elements[5].style.padding = '2.5px';
                 elements[5].style.backgroundColor = 'var(--cor-4)';
                 elements[5].style.borderRadius = '3px'
-                elements[5].innerHTML = `Você cadastrou (${elements[7].length - 1}) número(s),
-                                     o número maior foi (${maior}), 
-                                     o número menor foi (${menor}),
-                                     a soma de todos os valores foi (${soma})
-                                     e a média dos valores é ${soma / (elements[7].length - 1)}!`;
+                elements[5].innerHTML = `Você cadastrou <span>${elements[7].length - 1}</span> número(s),
+                                     o número maior foi <span>${maior}</span>, 
+                                     o número menor foi <span>${menor}</span>,
+                                     a soma de todos os valores foi <span>${soma}</span>
+                                     e a média dos valores é <span>${somaF.toFixed(2)}</span>!`;
                 elements[1].focus();
                 console.log(elements[3].length)
             }
