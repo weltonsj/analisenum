@@ -72,14 +72,24 @@
             margin: 20px 0px 2.5px 0px;
             width: 67%;
             height: 150px;
+            overflow-y: scroll;
+            overflow-x: hidden;
+            background-color: white;
+            font-family: monospace;
         }
 
         #list_soma {
+            font-family: Arial, Helvetica, sans-serif;
             font-weight: bold;
             color: var(--cor-4);
             background-color: var(--cor-3);
             text-shadow: 0.5px 0px 0.5px black;
             box-shadow: 0.5px 0px 3px black;
+            font-size: 0.8rem;
+        }
+
+        select:disabled {
+            background-color: white;
         }
 
         option {
@@ -106,7 +116,7 @@
 
         #resultado {
             word-spacing: 3px;
-            font-family: var(--Syne-body);
+            font-family: monospace;
             font-size: 0.85rem;
             color: white;
             text-shadow:
@@ -148,9 +158,11 @@
         <p id="p1">Número (entre 1 a 100):</p>
         <input id="camp_soma" type="number" name="camp_soma">
         <button id="add">Adicionar</button>
-        <select name="lista" id="lista" size="10px">
-            <option id="list_soma" value="list_soma">Lista de Números</option>
-        </select>
+        <div id="container" size="10">
+            <select name="lista" id="lista" size="10">
+                <option id="list_soma" value="list_soma">Lista de Números</option>
+            </select>
+        </div>
         <button id="end">Finalizar</button>
         <div id="resultado"></div>
     </section>
@@ -168,6 +180,21 @@
             document.getElementById("end"),//4
             document.getElementById("resultado")//5
         ];
+        elements[1].focus();
+
+        // Adicionar com o Enter
+        document.addEventListener("keypress", function (a) {
+            if (a.key == "Enter") {
+                addValueList();
+            }
+        });
+
+        // Finalizar com o Enter
+        document.addEventListener("keypress", function (f) {
+            if (f.key == "f") {
+                finalizar();
+            }
+        });
 
         // Boão Adicionar
         bt_add = elements[0];
@@ -180,7 +207,6 @@
         // Adicionar Valores a lista de números.
         var listsomabers = [];
         function addValueList() {
-            elements[1].focus();
             function verif(a) {
                 if (a) {
                     window.alert('Valor já consta na lista.');
@@ -206,10 +232,22 @@
 
             else {
                 verif(listsomabers.includes(elements[1].value));
-                var newItem = document.createElement('option');
-                newItem.text = `Valor ${parseFloat(elements[1].value)} selecionado`;
-                elements[2].appendChild(newItem);
+                var newItem = document.createElement('Option');
+                if (elements[1].value < 10) {
+                    newItem.text = `00${parseFloat(elements[1].value)} foi inserido`;
+                    elements[2].appendChild(newItem);
+
+                } else if (elements[1].value < 100) {
+                    newItem.text = `0${parseFloat(elements[1].value)} foi inserido`;
+                    elements[2].appendChild(newItem);
+
+                } else {
+                    newItem.text = `${parseFloat(elements[1].value)} foi inserido`;
+                    elements[2].appendChild(newItem);
+                }
             }
+            elements[1].value = ''
+            elements[1].focus();
         }
 
         // Finaliza a lista de números e faz a soma dos valores
@@ -217,33 +255,39 @@
         var menor = 0;
 
         function finalizar() {
-            elements[1].focus();
-            var soma = 0;
+            if (listsomabers == '') {
 
-            for (let c = 0; c < listsomabers.length; c++) {
-                soma += parseFloat(listsomabers[c]);
+            } else {
+                var soma = 0;
 
-                if (maior == 0 && menor == 0) {
-                    maior = parseInt(listsomabers[c]);
-                    menor = parseInt(listsomabers[c]);
-                } else if (menor > parseInt(listsomabers[c])) {
-                    menor = parseInt(listsomabers[c]);
-                } else if (parseInt(listsomabers[c]) > maior) {
-                    maior = parseInt(listsomabers[c]);
-                } 
-            }
-            elements[5].style.border = '0.1px solid white';
-            elements[5].style.marginTop = '5px';
-            elements[5].style.marginBottom = '5px';
-            elements[5].style.padding = '2.5px';
-            elements[5].style.backgroundColor = 'var(--cor-4)';
-            elements[5].style.borderRadius = '3px'
-            elements[5].innerHTML = `Você cadastrou (${elements[2].length - 1}) número(s),
+                for (let c = 0; c < listsomabers.length; c++) {
+                    soma += parseFloat(listsomabers[c]);
+
+                    if (maior == 0 && menor == 0) {
+                        maior = parseInt(listsomabers[c]);
+                        menor = parseInt(listsomabers[c]);
+
+                    } else if (menor > parseInt(listsomabers[c])) {
+                        menor = parseInt(listsomabers[c]);
+
+                    } else if (parseInt(listsomabers[c]) > maior) {
+                        maior = parseInt(listsomabers[c]);
+                    }
+                }
+                elements[5].style.border = '0.1px solid white';
+                elements[5].style.marginTop = '5px';
+                elements[5].style.marginBottom = '5px';
+                elements[5].style.padding = '2.5px';
+                elements[5].style.backgroundColor = 'var(--cor-4)';
+                elements[5].style.borderRadius = '3px'
+                elements[5].innerHTML = `Você cadastrou (${elements[2].length - 1}) número(s),
                                      o número maior foi (${maior}), 
                                      o número menor foi (${menor}),
                                      a soma de todos os valores foi (${soma})
                                      e a média dos valores é ${soma / (elements[2].length - 1)}!`;
-            console.log(typeof (maior) + maior)
+                elements[1].focus();
+                console.log(elements[3].length)
+            }
         }
     </script>
 </body>
