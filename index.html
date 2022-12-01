@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analizador</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Secular+One&family=Syne+Mono&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Rubik+Distressed&display=swap');
+
+        :root {
+            /* Cores */
+            --cor-1: #2882f7;
+            --cor-2: #2882f783;
+            --cor-3: #75f3b4c4;
+            --cor-4: #13b162e7;
+            --cor-5: #eeff00e7;
+
+            /* Fontes */
+            --font-header: 'Secular One', sans-serif;
+            --Syne-body: 'Syne Mono', monospace;
+            --Rubik-Distressed: 'Rubik Distressed', cursive;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--cor-3);
+            font-family: var(--Syne-body);
+        }
+
+        header {
+            font-family: var(--Syne-body);
+            font-size: 0.7rem;
+            text-align: center;
+            color: var(--cor-4);
+            margin-top: 25px;
+            text-shadow: 0px 1px 1px black;
+        }
+
+        section {
+            margin: auto;
+            margin-top: 25px;
+            padding: 10px;
+            max-width: 20%;
+            background-color: var(--cor-4);
+            /* border-bottom: #f72839; */
+            border-radius: 10px 10px 10px 10px;
+            box-shadow: 0px 1px 2px black;
+        }
+
+        #p1 {
+            display: inline-block;
+            margin-bottom: 5px;
+            color: white;
+            text-shadow: 0.5px 0px 1px black;
+        }
+
+        #camp_soma {
+            max-width: 100%;
+            margin-bottom: 5px;
+        }
+
+
+        #lista {
+            display: block;
+            margin: 20px 0px 2.5px 0px;
+        }
+
+        #list_soma {
+            font-weight: bold;
+            color: var(--cor-4);
+            background-color: var(--cor-3);
+            text-shadow: 0.5px 0px 0.5px black;
+            box-shadow: 0.5px 0px 3px black;
+        }
+
+        option {
+            padding: 2px;
+        }
+
+        button {
+            color: white;
+            background-color: var(--cor-3);
+            padding: 3px;
+            border: 25px black;
+            border-radius: 5px;
+        }
+
+        button:hover {
+            background-color: var(--cor-3);
+        }
+
+        button:active {
+            background-color: var(--cor-4);
+            box-shadow: 0px 0px 3px black;
+            text-shadow: 0px 1px 3px black;
+        }
+
+        #resultado {
+            word-spacing: 3px;
+            font-family: var(--Syne-body);
+            font-size: 0.85rem;
+            color: white;
+            text-shadow:
+                0px 0px 1px black,
+                0px 0px 1px black,
+                0px 0px 2px black,
+                0px 0px 2px black, ;
+            /* box-shadow: 1px 1px 1px white; */
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 25px;
+            margin-bottom: 25px;
+            color: var(--cor-4);
+            font-size: 0.89rem;
+            text-shadow: 0px 0px 0.5px black;
+        }
+
+        @media screen and (max-width: 1180px) {
+            section {
+                max-width: 40%;
+            }
+        }
+
+        @media screen and (max-width: 560px) {
+            section {
+                max-width: 80%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>Analizador de Números</h1>
+    </header>
+    <section>
+        <p id="p1">Número (entre 1 a 100):</p>
+        <input id="camp_soma" type="number" name="camp_soma">
+        <button id="add">Adicionar</button>
+        <select name="lista" id="lista" size="10px">
+            <option id="list_soma" value="list_soma">Lista de Números</option>
+        </select>
+        <button id="end">Finalizar</button>
+        <div id="resultado"></div>
+    </section>
+    <footer>
+        <small>&copy; Icoutech Tecnology</small>
+    </footer>
+
+    <script>
+        // My Arrey
+        var elements = [
+            document.getElementById("add"),//0
+            document.getElementById("camp_soma"),//1
+            document.getElementById("lista"),//2
+            document.getElementById("list_soma"),//3
+            document.getElementById("end"),//4
+            document.getElementById("resultado")//5
+        ];
+
+        // Boão Adicionar
+        bt_add = elements[0];
+        bt_add.addEventListener("click", addValueList);
+
+        // Botão Finalizar
+        bt_end = elements[4];
+        bt_end.addEventListener("click", finalizar);
+
+        // Adicionar Valores a lista de números.
+        var listsomabers = [];
+        function addValueList() {
+            elements[1].focus();
+            function verif(a) {
+                if (a) {
+                    window.alert('Valor já consta na lista.');
+                    listTemp.pop();
+                    let optionDel = document.getElementsByTagName("option");
+                    optionDel.remove();
+                    return 'Consta';
+                }
+                else {
+                    listTemp = elements[1].value;
+                    listsomabers.push(listTemp);
+                    return 'Não consta';
+                }
+            }
+
+            if (elements[1].value <= 0) {
+                window.alert('Valor não digitado, insira um valor e clique em "Adicionar".');
+            }
+
+            else if (elements[1].value > 100) {
+                window.alert(`O número ${elements[1].value} está a cima do número permitido.`);
+            }
+
+            else {
+                verif(listsomabers.includes(elements[1].value));
+                var newItem = document.createElement('option');
+                newItem.text = `Valor ${parseFloat(elements[1].value)} selecionado`;
+                elements[2].appendChild(newItem);
+            }
+        }
+
+        // Finaliza a lista de números e faz a soma dos valores
+        var maior = 0;
+        var menor = 0;
+
+        function finalizar() {
+            elements[1].focus();
+            var soma = 0;
+
+            for (let c = 0; c < listsomabers.length; c++) {
+                soma += parseFloat(listsomabers[c]);
+
+                if (maior == 0 && menor == 0) {
+                    maior = parseInt(listsomabers[c]);
+                    menor = parseInt(listsomabers[c]);
+                } else if (menor > parseInt(listsomabers[c])) {
+                    menor = parseInt(listsomabers[c]);
+                } else if (parseInt(listsomabers[c]) > maior) {
+                    maior = parseInt(listsomabers[c]);
+                } 
+            }
+            elements[5].style.border = '0.1px solid white';
+            elements[5].style.marginTop = '5px';
+            elements[5].style.marginBottom = '5px';
+            elements[5].style.padding = '2.5px';
+            elements[5].style.backgroundColor = 'var(--cor-4)';
+            elements[5].style.borderRadius = '3px'
+            elements[5].innerHTML = `Você cadastrou (${elements[2].length - 1}) número(s),
+                                     o número maior foi (${maior}), 
+                                     o número menor foi (${menor}),
+                                     a soma de todos os valores foi (${soma})
+                                     e a média dos valores é ${soma / (elements[2].length - 1)}!`;
+            console.log(typeof (maior) + maior)
+        }
+    </script>
+</body>
+
+</html>
